@@ -4,11 +4,13 @@ import kr.markdown.alreadyme.domain.dto.GithubUrlDto.Create;
 import kr.markdown.alreadyme.utils.JGitUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.FileWriter;
 
 @Service
 @RequiredArgsConstructor
@@ -29,20 +31,28 @@ public class AppService {
 
     private JGitUtil jGitUtil = new JGitUtil();
 
-    @PostConstruct
-    public void init() {
-        jGitUtil.init(id, token, name, email);
-        log.error("id {} \n token {} \n name {} \n email {} \n", id, token, name, email);
-    }
-
-    public String create(Create createDto){
+    public String create(Create createDto) {
         return "README.md";
     }
 
-    public void pullRequest(Create createDto) throws GitAPIException {
-        jGitUtil.cloneRepository(createDto.getGithubUrl());
-        jGitUtil.add("C:/Users/KimSuHeon/IdeaProjects/alreadyme/src/main/java/kr/markdown/alreadyme/files/ABC.md");
-        jGitUtil.commit("ABC.md");
-        jGitUtil.push();
+    public void pullRequest(Create createDto) throws Exception {
+        Git git = jGitUtil.cloneRepository(createDto.getGithubUrl());
+
+        //markdown 코드 생성
+        createReadme(git.getRepository().getDirectory().getPath()+"\\..", "test + test");
+
+        jGitUtil.add(git, ".");
+        jGitUtil.commit(git, "feat: Add README.md by ALREADYME-BOT", name, email);
+        jGitUtil.push(git, id, token);
+    }
+
+    private void createReadme(String path, String text) throws Exception {
+        try {
+            FileWriter output = new FileWriter(path + "/README.md");
+            output.write(text);
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

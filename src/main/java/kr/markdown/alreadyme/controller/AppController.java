@@ -35,7 +35,7 @@ public class AppController {
 
     @PostMapping("pull-request")
     @ResponseStatus(HttpStatus.CREATED)
-    public void pullRequest(@Valid @RequestBody Create createDto) throws GitAPIException {
+    public void pullRequest(@Valid @RequestBody Create createDto) throws Exception {
         service.pullRequest(createDto);
     }
 }
