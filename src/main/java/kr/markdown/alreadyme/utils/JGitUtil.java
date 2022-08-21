@@ -12,16 +12,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.UUID;
 
 public class JGitUtil {
 
     public static Git cloneRepository(String gitUrl) throws GitAPIException {
 
-        //gitUrl로 UUID 값으로 directory 값 생성 코드 추가하기
+        String directory = "/" + UUID.nameUUIDFromBytes(gitUrl.getBytes()).toString();
 
         Git git = Git.cloneRepository()
                 .setURI(gitUrl)
-                .setDirectory(new File(System.getProperty("user.dir")+"/directory"))
+                .setDirectory(new File(System.getProperty("user.dir") + directory))
                 .call();
         return git;
     }
@@ -43,5 +44,9 @@ public class JGitUtil {
         pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(id, token));
         pushCommand.setForce(true);
         pushCommand.call();
+    }
+
+    public static void close(Git git) {
+        git.close();
     }
 }
