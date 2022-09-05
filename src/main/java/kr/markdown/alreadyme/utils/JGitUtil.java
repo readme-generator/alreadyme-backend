@@ -15,7 +15,7 @@ public class JGitUtil {
 
     public static Git cloneRepository(String gitUrl) throws GitAPIException, IOException {
 
-        String directory = File.separator + UUID.nameUUIDFromBytes(gitUrl.getBytes());
+        String directory = File.separator + UUID.randomUUID();
         Git git;
         try {
             git = Git.cloneRepository()
