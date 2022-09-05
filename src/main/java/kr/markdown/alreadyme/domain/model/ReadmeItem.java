@@ -3,10 +3,7 @@ package kr.markdown.alreadyme.domain.model;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -23,12 +20,10 @@ public class ReadmeItem {
     private Long id;
 
     @NotBlank
-    private String githubUrl;
+    private String githubOriginalUrl;
 
     @NotBlank
-    private String githubBotUrl;
-
-    @NotBlank
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String readmeText;
 
     private String objectUrl;
