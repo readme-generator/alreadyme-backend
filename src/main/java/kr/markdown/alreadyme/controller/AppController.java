@@ -1,9 +1,10 @@
 package kr.markdown.alreadyme.controller;
 
-import kr.markdown.alreadyme.domain.dto.GithubUrlDto.Create;
+import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Create;
+import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Request;
+import kr.markdown.alreadyme.domain.model.ReadmeItem;
 import kr.markdown.alreadyme.service.AppService;
 import lombok.RequiredArgsConstructor;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class AppController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String post(@Valid @RequestBody Create createDto){
+    public ReadmeItem post(@Valid @RequestBody Create createDto) throws Exception {
         return service.create(createDto);
     }
 
@@ -29,14 +30,14 @@ public class AppController {
     }
 
     @PostMapping("download")
-    public String download() {
-        return null;
+    public String download(@Valid @RequestBody Request requestDto) throws Exception {
+        return service.download(requestDto);
     }
 
     @PostMapping("pull-request")
     @ResponseStatus(HttpStatus.CREATED)
-    public void pullRequest(@Valid @RequestBody Create createDto) throws Exception {
-        service.pullRequest(createDto);
+    public void pullRequest(@Valid @RequestBody Request requestDto) throws Exception {
+        service.pullRequest(requestDto);
     }
 }
 

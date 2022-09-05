@@ -1,29 +1,32 @@
 package kr.markdown.alreadyme.utils;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.apache.http.auth.UsernamePasswordCredentials;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
 public class JGitUtil {
 
-    public static Git cloneRepository(String gitUrl) throws GitAPIException {
+    public static Git cloneRepository(String gitUrl) throws GitAPIException, IOException {
 
-        String directory = "/" + UUID.nameUUIDFromBytes(gitUrl.getBytes()).toString();
+        String directory = File.separator + UUID.randomUUID();
+        Git git;
+        try {
+            git = Git.cloneRepository()
+                    .setURI(gitUrl)
+                    .setDirectory(new File(System.getProperty("user.dir") + directory))
+                    .setTimeout(30)
+                    .call();
 
-        Git git = Git.cloneRepository()
-                .setURI(gitUrl)
-                .setDirectory(new File(System.getProperty("user.dir") + directory))
-                .call();
+        } catch (JGitInternalException e) {
+            git = Git.open(new File(System.getProperty("user.dir") + directory));
+        }
         return git;
     }
 
