@@ -18,7 +18,21 @@ public interface ReadmeItemDto {
     class Create {
         @NotBlank
         @Pattern(regexp = "(?:https://)github.com[:/](.*).git")
-        String githubUrl;
+        private String githubOriginalUrl;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    class Request {
+        @NotBlank
+        @Pattern(regexp = "(?:https://)github.com[:/](.*).git")
+        private String githubOriginalUrl;
+
+        @NotNull
+        private Long id;
     }
 
     @Getter
@@ -31,10 +45,8 @@ public interface ReadmeItemDto {
         private Long id;
 
         @NotBlank
-        private String githubUrl;
-
-        @NotBlank
-        private String githubBotUrl;
+        @Pattern(regexp = "(?:https://)github.com[:/](.*).git")
+        private String githubOriginalUrl;
 
         @NotBlank
         private String readmeText;
