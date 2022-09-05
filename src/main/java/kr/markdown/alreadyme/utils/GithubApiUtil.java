@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -51,6 +52,22 @@ public class GithubApiUtil {
             httpPost.setEntity(new StringEntity(node.toString(), "UTF-8"));
 
             httpClient.execute(httpPost);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void gitDeleteRemoteRepository(String githubUrl, String token) {
+        try {
+            HttpClient httpClient = HttpClientBuilder.create().build();
+            HttpDelete httpDelete = new HttpDelete("https://api.github.com/repos"+ exportGitRepoPath(githubUrl));
+            System.out.println("https://api.github.com/repos"+ exportGitRepoPath(githubUrl));
+
+            httpDelete.setHeader("Accept", "application/vnd.github.v3+json");
+            httpDelete.setHeader("Authorization", "token " + token);
+
+            httpClient.execute(httpDelete);
 
         } catch (Exception e) {
             e.printStackTrace();
