@@ -30,7 +30,7 @@ public class AppController {
     }
 
     @PostMapping("download")
-    public String download(@Valid @RequestBody Request requestDto) throws Exception {
+    public ReadmeItem download(@Valid @RequestBody Request requestDto) throws Exception {
         return service.download(requestDto);
     }
 
