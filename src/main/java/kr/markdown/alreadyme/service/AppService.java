@@ -82,9 +82,11 @@ public class AppService {
     @Transactional
     public String download(Request requestDto) throws Exception {
 
+        ReadmeItem readmeItem = findReadmeItemThrowException(requestDto.getId());
+
         //Create README.md
         String getDownloadFilePath = createDownloadReadme(
-                findReadmeItemThrowException(requestDto.getId()).getReadmeText()
+                readmeItem.getReadmeText()
         );
 
         log.error("download path {}", getDownloadFilePath);
@@ -98,8 +100,10 @@ public class AppService {
 
     public void pullRequest(Request requestDto) throws Exception {
 
+        ReadmeItem readmeItem = findReadmeItemThrowException(requestDto.getId());
+
         //GitFork
-        String githubBotUrl = GithubApiUtil.gitFork(requestDto.getGithubOriginalUrl(), token);
+        String githubBotUrl = GithubApiUtil.gitFork(readmeItem.getGithubOriginalUrl(), token);
 
         //GitClone
         Git git = JGitUtil.cloneRepository(githubBotUrl);
@@ -107,7 +111,7 @@ public class AppService {
         //Create Readme
         createReadme(
                 git.getRepository().getDirectory().getPath() + File.separator + "..",
-                findReadmeItemThrowException(requestDto.getId()).getReadmeText()
+                readmeItem.getReadmeText()
         );
 
         JGitUtil.add(git, ".");
@@ -115,7 +119,7 @@ public class AppService {
         JGitUtil.push(git, id, token);
 
         //GitPullRequest
-        GithubApiUtil.gitPullRequest(requestDto.getGithubOriginalUrl(), token, git.getRepository().getBranch());
+        GithubApiUtil.gitPullRequest(readmeItem.getGithubOriginalUrl(), token, git.getRepository().getBranch());
 
         //Delete Local & Remote Repository
         JGitUtil.close(git);

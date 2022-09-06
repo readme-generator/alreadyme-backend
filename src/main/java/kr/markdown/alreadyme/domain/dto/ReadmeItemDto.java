@@ -27,10 +27,6 @@ public interface ReadmeItemDto {
     @AllArgsConstructor
     @NoArgsConstructor
     class Request {
-        @NotBlank
-        @Pattern(regexp = "(?:https://)github.com[:/](.*).git")
-        private String githubOriginalUrl;
-
         @NotNull
         private Long id;
     }
