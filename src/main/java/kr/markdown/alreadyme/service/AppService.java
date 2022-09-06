@@ -32,6 +32,7 @@ public class AppService {
     private final ReadmeItemRepository readmeItemRepository;
 
     private final AiService aiService;
+    private final S3Service s3Service;
 
     @Value("${github.id}")
     private String id;
@@ -80,34 +81,37 @@ public class AppService {
     }
 
     @Transactional
-    public String download(Request requestDto) throws Exception {
+    public ReadmeItem download(Request requestDto) throws Exception {
+
+        ReadmeItem readmeItem = findReadmeItemThrowException(requestDto.getId());
 
         //Create README.md
-        String getDownloadFilePath = createDownloadReadme(
-                findReadmeItemThrowException(requestDto.getId()).getReadmeText()
-        );
+        File uploadFile = createDownloadReadme(readmeItem.getReadmeText());
 
-        log.error("download path {}", getDownloadFilePath);
+        //upload README.md to S3-bucket
+        String objectUrl = s3Service.upload(uploadFile, uploadFile.getParentFile().getName());
+        readmeItem.setObjectUrl(objectUrl);
 
-        //Upload S3
+        //Delete Folder
+        FileUtils.deleteDirectory(new File(uploadFile.getParentFile().getPath()));
 
-        //Create download link
-
-        return null;
+        return readmeItemRepository.save(readmeItem);
     }
 
     public void pullRequest(Request requestDto) throws Exception {
 
+        ReadmeItem readmeItem = findReadmeItemThrowException(requestDto.getId());
+
         //GitFork
-        String githubBotUrl = GithubApiUtil.gitFork(requestDto.getGithubOriginalUrl(), token);
+        String githubBotUrl = GithubApiUtil.gitFork(readmeItem.getGithubOriginalUrl(), token);
 
         //GitClone
         Git git = JGitUtil.cloneRepository(githubBotUrl);
 
         //Create Readme
-        createReadme(
+        createPullRequestReadme(
                 git.getRepository().getDirectory().getPath() + File.separator + "..",
-                findReadmeItemThrowException(requestDto.getId()).getReadmeText()
+                readmeItem.getReadmeText()
         );
 
         JGitUtil.add(git, ".");
@@ -115,7 +119,7 @@ public class AppService {
         JGitUtil.push(git, id, token);
 
         //GitPullRequest
-        GithubApiUtil.gitPullRequest(requestDto.getGithubOriginalUrl(), token, git.getRepository().getBranch());
+        GithubApiUtil.gitPullRequest(readmeItem.getGithubOriginalUrl(), token, git.getRepository().getBranch());
 
         //Delete Local & Remote Repository
         JGitUtil.close(git);
@@ -124,7 +128,7 @@ public class AppService {
     }
 
     //create README.md
-    private void createReadme(String localDirPath, String text) throws Exception {
+    private void createPullRequestReadme(String localDirPath, String text) throws Exception {
         try {
             FileWriter output = new FileWriter(localDirPath + File.separator +"README.md");
             output.write(text);
@@ -135,7 +139,7 @@ public class AppService {
     }
 
     //create download README.md
-    private String createDownloadReadme(String text) throws Exception {
+    private File createDownloadReadme(String text) throws Exception {
         File file = new File(System.getProperty("user.dir") + File.separator + UUID.randomUUID() + File.separator + "README.md");
         try {
             file.getParentFile().mkdirs();
@@ -146,7 +150,7 @@ public class AppService {
             e.printStackTrace();
         }
 
-        return file.getAbsolutePath();
+        return file;
     }
 
     private ReadmeItem findReadmeItemThrowException(Long id) {

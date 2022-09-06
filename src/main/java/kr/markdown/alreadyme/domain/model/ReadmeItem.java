@@ -30,4 +30,8 @@ public class ReadmeItem {
 
     @DateTimeFormat
     private LocalDateTime createdTime;
+
+    public void setObjectUrl(String objectUrl) {
+        this.objectUrl = objectUrl;
+    }
 }

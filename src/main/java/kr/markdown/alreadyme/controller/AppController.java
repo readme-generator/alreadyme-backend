@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/app")
@@ -24,13 +23,8 @@ public class AppController {
         return service.create(createDto);
     }
 
-    @PostMapping("get-branch-list")
-    public List<String> getBranchList() {
-        return null;
-    }
-
     @PostMapping("download")
-    public String download(@Valid @RequestBody Request requestDto) throws Exception {
+    public ReadmeItem download(@Valid @RequestBody Request requestDto) throws Exception {
         return service.download(requestDto);
     }
 
