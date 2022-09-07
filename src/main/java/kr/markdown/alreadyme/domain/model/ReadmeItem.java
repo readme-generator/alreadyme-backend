@@ -2,6 +2,7 @@ package kr.markdown.alreadyme.domain.model;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -26,6 +27,7 @@ public class ReadmeItem {
     @Column(columnDefinition = "MEDIUMTEXT")
     private String readmeText;
 
+    @Nullable
     private String objectUrl;
 
     @DateTimeFormat
