@@ -36,6 +36,16 @@ public interface ReadmeItemDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    class ObjectUrl {
+        @NotBlank
+        private String objectUrl;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     class Result {
         @NotNull
         private Long id;

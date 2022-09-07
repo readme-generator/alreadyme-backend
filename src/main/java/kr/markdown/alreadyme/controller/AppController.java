@@ -2,6 +2,7 @@ package kr.markdown.alreadyme.controller;
 
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Create;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Request;
+import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.ObjectUrl;
 import kr.markdown.alreadyme.domain.model.ReadmeItem;
 import kr.markdown.alreadyme.service.AppService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class AppController {
     }
 
     @PostMapping("download")
-    public ReadmeItem download(@Valid @RequestBody Request requestDto) throws Exception {
+    public ObjectUrl download(@Valid @RequestBody Request requestDto) throws Exception {
         return service.download(requestDto);
     }
 
