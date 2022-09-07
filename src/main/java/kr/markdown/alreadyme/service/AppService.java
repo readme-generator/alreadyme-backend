@@ -138,7 +138,7 @@ public class AppService {
 
         //Delete Local & Remote Repository
         JGitUtil.close(git);
-        FileUtils.deleteDirectory(new File(git.getRepository().getDirectory().getPath() + "\\.."));
+        FileUtils.deleteDirectory(new File(git.getRepository().getDirectory().getParentFile().getPath()));
 //        GithubApiUtil.gitDeleteRemoteRepository(githubBotUrl, token);
     }
 
