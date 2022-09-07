@@ -84,14 +84,23 @@ public class AppService {
     @Transactional
     public ObjectUrl download(Request requestDto) throws Exception {
 
+        ObjectUrl objectUrlDto;
         ReadmeItem readmeItem = findReadmeItemThrowException(requestDto.getId());
+
+        //If S3 link already exists
+        if(readmeItem.getObjectUrl() != null) {
+            objectUrlDto = ObjectUrl.builder()
+                    .objectUrl(readmeItem.getObjectUrl())
+                    .build();
+            return objectUrlDto;
+        }
 
         //Create README.md
         File uploadFile = createDownloadReadme(readmeItem.getReadmeText());
 
         //Upload README.md to S3-bucket
         String objectUrl = s3Service.upload(uploadFile, uploadFile.getParentFile().getName());
-        ObjectUrl objectUrlDto = ObjectUrl.builder()
+        objectUrlDto = ObjectUrl.builder()
                 .objectUrl(objectUrl)
                 .build();
 
