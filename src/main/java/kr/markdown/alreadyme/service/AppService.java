@@ -2,6 +2,7 @@ package kr.markdown.alreadyme.service;
 
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Create;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Request;
+import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.ObjectUrl;
 import kr.markdown.alreadyme.domain.model.ReadmeItem;
 import kr.markdown.alreadyme.repository.ReadmeItemRepository;
 import kr.markdown.alreadyme.utils.FileScanUtil;
@@ -57,18 +58,18 @@ public class AppService {
 
         //FileScan
         File gitDirectory = git.getRepository().getDirectory();
-        String json = FileScanUtil.createJson(
+        String requestJsonData = FileScanUtil.createJson(
                 new File(gitDirectory.getPath() + File.separator + "..").getCanonicalPath(),
                 gitDirectory.getParentFile().getName()
         );
 
-        //Repository Delete
+        //Delete Repository
         JGitUtil.close(git);
         FileUtils.deleteDirectory(new File(git.getRepository().getDirectory().getParentFile().getPath()));;
         GithubApiUtil.gitDeleteRemoteRepository(githubBotUrl, token);
 
         //Get readmeText by ai-server
-        String readmeText = aiService.getReadmeText(json);
+        String readmeText = aiService.getReadmeText(requestJsonData, createDto.getGithubOriginalUrl());
 
         //Create ReadmeItem
         ReadmeItem readmeItem = ReadmeItem.builder()
@@ -81,21 +82,35 @@ public class AppService {
     }
 
     @Transactional
-    public ReadmeItem download(Request requestDto) throws Exception {
+    public ObjectUrl download(Request requestDto) throws Exception {
 
+        ObjectUrl objectUrlDto;
         ReadmeItem readmeItem = findReadmeItemThrowException(requestDto.getId());
+
+        //If S3 link already exists
+        if(readmeItem.getObjectUrl() != null) {
+            objectUrlDto = ObjectUrl.builder()
+                    .objectUrl(readmeItem.getObjectUrl())
+                    .build();
+            return objectUrlDto;
+        }
 
         //Create README.md
         File uploadFile = createDownloadReadme(readmeItem.getReadmeText());
 
-        //upload README.md to S3-bucket
+        //Upload README.md to S3-bucket
         String objectUrl = s3Service.upload(uploadFile, uploadFile.getParentFile().getName());
+        objectUrlDto = ObjectUrl.builder()
+                .objectUrl(objectUrl)
+                .build();
+
         readmeItem.setObjectUrl(objectUrl);
+        readmeItemRepository.save(readmeItem);
 
         //Delete Folder
         FileUtils.deleteDirectory(new File(uploadFile.getParentFile().getPath()));
 
-        return readmeItemRepository.save(readmeItem);
+        return objectUrlDto;
     }
 
     public void pullRequest(Request requestDto) throws Exception {
@@ -108,7 +123,7 @@ public class AppService {
         //GitClone
         Git git = JGitUtil.cloneRepository(githubBotUrl);
 
-        //Create Readme
+        //Create README.md
         createPullRequestReadme(
                 git.getRepository().getDirectory().getPath() + File.separator + "..",
                 readmeItem.getReadmeText()
@@ -123,7 +138,7 @@ public class AppService {
 
         //Delete Local & Remote Repository
         JGitUtil.close(git);
-        FileUtils.deleteDirectory(new File(git.getRepository().getDirectory().getPath() + "\\.."));
+        FileUtils.deleteDirectory(new File(git.getRepository().getDirectory().getParentFile().getPath()));
 //        GithubApiUtil.gitDeleteRemoteRepository(githubBotUrl, token);
     }
 
