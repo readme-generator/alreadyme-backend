@@ -62,7 +62,6 @@ public class GithubApiUtil {
         try {
             HttpClient httpClient = HttpClientBuilder.create().build();
             HttpDelete httpDelete = new HttpDelete("https://api.github.com/repos"+ exportGitRepoPath(githubUrl));
-            System.out.println("https://api.github.com/repos"+ exportGitRepoPath(githubUrl));
 
             httpDelete.setHeader("Accept", "application/vnd.github.v3+json");
             httpDelete.setHeader("Authorization", "token " + token);
