@@ -1,5 +1,7 @@
 package kr.markdown.alreadyme.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Create;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Request;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.ObjectUrl;
@@ -57,8 +59,11 @@ public class AppService {
         Git git = JGitUtil.cloneRepository(githubBotUrl);
 
         //FileScan
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode objectNode = objectMapper.createObjectNode();
         File gitDirectory = git.getRepository().getDirectory();
         String requestJsonData = FileScanUtil.createJson(
+                objectNode,
                 new File(gitDirectory.getPath() + File.separator + "..").getCanonicalPath(),
                 gitDirectory.getParentFile().getName()
         );
