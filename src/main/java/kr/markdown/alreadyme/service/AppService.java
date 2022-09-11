@@ -52,11 +52,8 @@ public class AppService {
     @Transactional
     public ReadmeItem create(Create createDto) throws Exception {
 
-        //GitFork
-        String githubBotUrl = GithubApiUtil.gitFork(createDto.getGithubOriginalUrl(), token);
-
         //GitClone
-        Git git = JGitUtil.cloneRepository(githubBotUrl);
+        Git git = JGitUtil.cloneRepository(createDto.getGithubOriginalUrl());
 
         //FileScan
         ObjectMapper objectMapper = new ObjectMapper();
@@ -71,7 +68,6 @@ public class AppService {
         //Delete Repository
         JGitUtil.close(git);
         FileUtils.deleteDirectory(new File(git.getRepository().getDirectory().getParentFile().getPath()));;
-        GithubApiUtil.gitDeleteRemoteRepository(githubBotUrl, token);
 
         //Get readmeText by ai-server
         String readmeText = aiService.getReadmeText(requestJsonData, createDto.getGithubOriginalUrl());
