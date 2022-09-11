@@ -19,18 +19,19 @@ public class AppController {
     public final AppService service;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public ReadmeItem post(@Valid @RequestBody Create createDto) throws Exception {
         return service.create(createDto);
     }
 
     @PostMapping("download")
+    @ResponseStatus(HttpStatus.OK)
     public ObjectUrl download(@Valid @RequestBody Request requestDto) throws Exception {
         return service.download(requestDto);
     }
 
     @PostMapping("pull-request")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public void pullRequest(@Valid @RequestBody Request requestDto) throws Exception {
         service.pullRequest(requestDto);
     }

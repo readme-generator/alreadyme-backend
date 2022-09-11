@@ -1,5 +1,7 @@
 package kr.markdown.alreadyme.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Create;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Request;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.ObjectUrl;
@@ -50,15 +52,17 @@ public class AppService {
     @Transactional
     public ReadmeItem create(Create createDto) throws Exception {
 
-        //GitFork
-        String githubBotUrl = GithubApiUtil.gitFork(createDto.getGithubOriginalUrl(), token);
+        String gitUrl = createDto.getGithubOriginalUrl()+".git";
 
         //GitClone
-        Git git = JGitUtil.cloneRepository(githubBotUrl);
+        Git git = JGitUtil.cloneRepository(gitUrl);
 
         //FileScan
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode objectNode = objectMapper.createObjectNode();
         File gitDirectory = git.getRepository().getDirectory();
         String requestJsonData = FileScanUtil.createJson(
+                objectNode,
                 new File(gitDirectory.getPath() + File.separator + "..").getCanonicalPath(),
                 gitDirectory.getParentFile().getName()
         );
@@ -66,14 +70,13 @@ public class AppService {
         //Delete Repository
         JGitUtil.close(git);
         FileUtils.deleteDirectory(new File(git.getRepository().getDirectory().getParentFile().getPath()));;
-        GithubApiUtil.gitDeleteRemoteRepository(githubBotUrl, token);
 
         //Get readmeText by ai-server
-        String readmeText = aiService.getReadmeText(requestJsonData, createDto.getGithubOriginalUrl());
+        String readmeText = aiService.getReadmeText(requestJsonData, gitUrl);
 
         //Create ReadmeItem
         ReadmeItem readmeItem = ReadmeItem.builder()
-                .githubOriginalUrl(createDto.getGithubOriginalUrl())
+                .githubOriginalUrl(gitUrl)
                 .readmeText(readmeText)
                 .createdTime(LocalDateTime.now())
                 .build();

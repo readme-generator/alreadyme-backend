@@ -17,7 +17,7 @@ public interface ReadmeItemDto {
     @NoArgsConstructor
     class Create {
         @NotBlank
-        @Pattern(regexp = "(?:https://)github.com[:/](.*).git")
+        @Pattern(regexp = "(?:https://)github.com[:/](.*)")
         private String githubOriginalUrl;
     }
 
