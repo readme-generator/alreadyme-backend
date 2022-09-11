@@ -52,8 +52,10 @@ public class AppService {
     @Transactional
     public ReadmeItem create(Create createDto) throws Exception {
 
+        String gitUrl = createDto.getGithubOriginalUrl()+".git";
+
         //GitClone
-        Git git = JGitUtil.cloneRepository(createDto.getGithubOriginalUrl());
+        Git git = JGitUtil.cloneRepository(gitUrl);
 
         //FileScan
         ObjectMapper objectMapper = new ObjectMapper();
@@ -70,11 +72,11 @@ public class AppService {
         FileUtils.deleteDirectory(new File(git.getRepository().getDirectory().getParentFile().getPath()));;
 
         //Get readmeText by ai-server
-        String readmeText = aiService.getReadmeText(requestJsonData, createDto.getGithubOriginalUrl());
+        String readmeText = aiService.getReadmeText(requestJsonData, gitUrl);
 
         //Create ReadmeItem
         ReadmeItem readmeItem = ReadmeItem.builder()
-                .githubOriginalUrl(createDto.getGithubOriginalUrl())
+                .githubOriginalUrl(gitUrl)
                 .readmeText(readmeText)
                 .createdTime(LocalDateTime.now())
                 .build();
