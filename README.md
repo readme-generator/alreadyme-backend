@@ -22,7 +22,7 @@ ALREADYME is a multiplatform desktop application which create a README.md. If yo
 <br>
 
 ## How to run server?
-Before starting the server, Create application-dev.properties file in src/main/resources path and use that template.
+Before starting the server, Create `application-dev.properties` file in src/main/resources path and use that template.
 
 ``` properties
 
