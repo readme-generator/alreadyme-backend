@@ -13,6 +13,9 @@
 <a href="">
    <img alt="Top Language" src="https://img.shields.io/github/languages/top/readme-generator/alreadyme-backend?color=6C3FD1">
 </a>
+<a href="https://www.codefactor.io/repository/github/readme-generator/alreadyme-backend/overview/develop">
+	<img src="https://www.codefactor.io/repository/github/readme-generator/alreadyme-backend/badge/develop" alt="CodeFactor" />
+</a>
 <br><br>
 <em><b>An easiest way to build README.md for your repository</b></em>
 </p>
