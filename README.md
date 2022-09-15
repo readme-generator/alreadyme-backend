@@ -1,6 +1,26 @@
 # ALREADYME-Backend
 
 ![image](https://user-images.githubusercontent.com/72238126/190327489-31753722-2449-4889-9544-a811acb5577f.png)
+<h1 align="center">ALREADYME.md Backend</h1>
+
+<p align="center">
+<a href="https://github.com/readme-generatoralreadyme-backend">
+	<img alt="GitHub issues" src="https://img.shields.io/github/issues/readme-generator/alreadyme-backend">
+</a>
+<a href="https://github.com/readme-generator/alreadyme-backend/blob/master/LICENSE">
+   <img alt="GitHub" src="https://img.shields.io/github/license/readme-generator/alreadyme-backend">
+</a>
+<a href="">
+   <img alt="Top Language" src="https://img.shields.io/github/languages/top/readme-generator/alreadyme-backend?color=6C3FD1">
+</a>
+<br><br>
+<em><b>An easiest way to build README.md for your repository</b></em>
+</p>
+
+---
+
+<br>
+
 ## What is the ALREADYME.md?
 ALREADYME is a multiplatform desktop application which create a README.md. If you input your github repository, it will analyze source codes of the repository and create README.md using AI. Let's create README.md of repository with only one-click.
 
@@ -9,13 +29,13 @@ ALREADYME is a multiplatform desktop application which create a README.md. If yo
 <br>
 
 ## Development Environment
-- Java @17.x
-- MySQL @8.x
-- Spring Boot @2.7.2
+- Java `@17.x`
+- MySQL `@8.x`
+- Spring Boot `@2.7.2`
 - Spring Data JPA
 - Spring Cloud for AWS
-- commons-io @2.6
-- httpclient @4.5.13
+- commons-io `@2.6`
+- httpclient `@4.5.13`
 
 ---
 
