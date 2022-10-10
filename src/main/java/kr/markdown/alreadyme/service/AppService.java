@@ -52,7 +52,8 @@ public class AppService {
     @Transactional
     public ReadmeItem create(Create createDto) throws Exception {
 
-        String gitUrl = createDto.getGithubOriginalUrl()+".git";
+        String gitUrl = createDto.getGithubOriginalUrl();
+        gitUrl += (createDto.getGithubOriginalUrl().contains(".git")) ? "" : ".git";
 
         //GitClone
         Git git = JGitUtil.cloneRepository(gitUrl);
