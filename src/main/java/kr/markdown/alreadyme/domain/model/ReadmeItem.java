@@ -23,7 +23,7 @@ public class ReadmeItem {
     @NotBlank
     private String githubOriginalUrl;
 
-    @NotBlank
+    @Nullable
     @Column(columnDefinition = "MEDIUMTEXT")
     private String readmeText;
 
