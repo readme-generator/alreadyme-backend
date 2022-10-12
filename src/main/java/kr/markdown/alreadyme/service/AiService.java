@@ -23,12 +23,13 @@ public class AiService {
     @Value("${ai-server.host}")
     private String aiServerHost;
 
-    public String getReadmeText(String requestJsonData, String githubOriginalUrl) throws IOException {
+    public void postReadmeText(Long id, String githubOriginalUrl, String requestJsonData) throws IOException {
 
         //requestJsonData
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode objectNode = objectMapper.createObjectNode();
 
+        objectNode.put("id", id);
         objectNode.put("githubOriginalUrl", githubOriginalUrl);
 
         ObjectNode jsonDataNode = (ObjectNode) new ObjectMapper().readTree(requestJsonData);
@@ -40,8 +41,6 @@ public class AiService {
         httpPost.setHeader("Content-type", "application/json");
 
         httpPost.setEntity(new StringEntity(objectNode.toString(), "UTF-8"));
-        HttpResponse httpResponse = httpClient.execute(httpPost);
-
-        return EntityUtils.toString(httpResponse.getEntity());
+        httpClient.execute(httpPost);
     }
 }
