@@ -16,7 +16,7 @@ import javax.validation.Valid;
 public class AiController {
     private final AiService service;
 
-    @PutMapping
+    @PutMapping("readme")
     @ResponseStatus(HttpStatus.OK)
     public ReadmeItem post(@Valid @RequestBody ReadmeItemDto.UpdateReadmeText updateDto) throws Exception {
         return service.responseReadmeText(updateDto);
