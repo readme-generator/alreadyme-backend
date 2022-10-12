@@ -36,4 +36,8 @@ public class ReadmeItem {
     public void setObjectUrl(String objectUrl) {
         this.objectUrl = objectUrl;
     }
+
+    public void setReadmeText(String readmeText) {
+        this.readmeText = readmeText;
+    }
 }
