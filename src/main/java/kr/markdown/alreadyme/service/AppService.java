@@ -81,7 +81,7 @@ public class AppService {
         newReadmeItem = findReadmeItemThrowException(newReadmeItem.getId());
 
         //POST call readmeText by ai-server
-        aiService.postReadmeText(newReadmeItem.getId(), gitUrl, requestJsonData);
+        aiService.requestReadmeText(newReadmeItem.getId(), gitUrl, requestJsonData);
 
         return readmeItemRepository.save(newReadmeItem);
     }
