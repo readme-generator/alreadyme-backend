@@ -3,6 +3,7 @@ package kr.markdown.alreadyme.controller;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Create;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Request;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.ObjectUrl;
+import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.PullRequest;
 import kr.markdown.alreadyme.domain.model.ReadmeItem;
 import kr.markdown.alreadyme.service.AppService;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,8 @@ public class AppController {
 
     @PostMapping("pull-request")
     @ResponseStatus(HttpStatus.OK)
-    public void pullRequest(@Valid @RequestBody Request requestDto) throws Exception {
-        service.pullRequest(requestDto);
+    public PullRequest pullRequest(@Valid @RequestBody Request requestDto) throws Exception {
+        return service.pullRequest(requestDto);
     }
 }
 
