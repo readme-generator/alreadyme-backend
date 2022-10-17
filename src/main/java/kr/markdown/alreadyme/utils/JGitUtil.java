@@ -35,6 +35,13 @@ public class JGitUtil {
                 .call();
     }
 
+    public static void checkout(Git git, String branchName) throws GitAPIException {
+        git.checkout()
+                .setCreateBranch(true)
+                .setName(branchName)
+                .call();
+    }
+
     public static void commit(Git git, String msg, String name, String email) throws GitAPIException {
         git.commit()
                 .setAuthor(name, email)

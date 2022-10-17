@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Create;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Request;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.ObjectUrl;
+import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.PullRequest;
 import kr.markdown.alreadyme.domain.model.ReadmeItem;
 import kr.markdown.alreadyme.repository.ReadmeItemRepository;
 import kr.markdown.alreadyme.utils.FileScanUtil;
@@ -118,7 +119,7 @@ public class AppService {
         return objectUrlDto;
     }
 
-    public void pullRequest(Request requestDto) throws Exception {
+    public PullRequest pullRequest(Request requestDto) throws Exception {
 
         ReadmeItem readmeItem = findReadmeItemThrowException(requestDto.getId());
 
@@ -133,18 +134,25 @@ public class AppService {
                 git.getRepository().getDirectory().getPath() + File.separator + "..",
                 readmeItem.getReadmeText()
         );
-
+        String masterBranchName = git.getRepository().getBranch();
+        JGitUtil.checkout(git, String.valueOf(requestDto.getId()));
         JGitUtil.add(git, ".");
         JGitUtil.commit(git, "feat: Add README.md by ALREADYME-BOT", name, email);
         JGitUtil.push(git, id, token);
 
         //GitPullRequest
-        GithubApiUtil.gitPullRequest(readmeItem.getGithubOriginalUrl(), token, git.getRepository().getBranch());
+        String pullRequestUrl = GithubApiUtil.gitPullRequest(readmeItem.getGithubOriginalUrl(), token, git.getRepository().getBranch(), masterBranchName);
 
         //Delete Local & Remote Repository
         JGitUtil.close(git);
         FileUtils.deleteDirectory(new File(git.getRepository().getDirectory().getParentFile().getPath()));
-//        GithubApiUtil.gitDeleteRemoteRepository(githubBotUrl, token);
+
+        //Create pullRequestDto
+        PullRequest pullRequestDto = PullRequest.builder()
+                .pullRequestUrl(pullRequestUrl)
+                .build();
+
+        return pullRequestDto;
     }
 
     //create README.md

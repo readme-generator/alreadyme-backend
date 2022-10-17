@@ -34,7 +34,7 @@ public class GithubApiUtil {
         return null;
     }
 
-    public static void gitPullRequest(String githubUrl, String token, String branchName) {
+    public static String gitPullRequest(String githubUrl, String token, String branchName, String masterBranchName) {
         try {
             HttpClient httpClient = HttpClientBuilder.create().build();
             HttpPost httpPost = new HttpPost("https://api.github.com/repos"+ exportGitRepoPath(githubUrl)+"/pulls");
@@ -47,15 +47,22 @@ public class GithubApiUtil {
             node.put("title", "Add README.md by ALREADYME-BOT");
             node.put("body", "This text was created by ALREADYME-BOT\nhttps://github.com/ALREADYME-BOT");
             node.put("head", "ALREADYME-BOT:" + branchName);
-            node.put("base", branchName);
+            node.put("base", masterBranchName);
 
             httpPost.setEntity(new StringEntity(node.toString(), "UTF-8"));
 
-            httpClient.execute(httpPost);
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            String jsonStr = EntityUtils.toString(httpResponse.getEntity());
+
+            ObjectMapper resMapper = new ObjectMapper();
+            JsonNode resNode = resMapper.readTree(jsonStr);
+            System.out.println(jsonStr);
+            return resNode.get("html_url").asText();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public static void gitDeleteRemoteRepository(String githubUrl, String token) {
