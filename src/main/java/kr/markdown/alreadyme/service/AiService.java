@@ -35,7 +35,7 @@ public class AiService {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode objectNode = objectMapper.createObjectNode();
 
-        objectNode.put("id", id);
+        objectNode.put("requestId", id);
         objectNode.put("githubOriginalUrl", githubOriginalUrl);
 
         ObjectNode jsonDataNode = (ObjectNode) new ObjectMapper().readTree(requestJsonData);
