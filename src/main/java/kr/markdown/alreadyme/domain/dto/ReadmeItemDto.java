@@ -59,6 +59,16 @@ public interface ReadmeItemDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    class PullRequest {
+        @NotBlank
+        private String pullRequestUrl;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     class Result {
         @NotNull
         private Long id;
