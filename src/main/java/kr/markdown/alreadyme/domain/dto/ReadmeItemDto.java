@@ -46,6 +46,19 @@ public interface ReadmeItemDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    class UpdateReadmeText {
+        @NotNull
+        private Long id;
+
+        @NotBlank
+        private String readmeText;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     class Result {
         @NotNull
         private Long id;

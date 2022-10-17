@@ -72,17 +72,18 @@ public class AppService {
         JGitUtil.close(git);
         FileUtils.deleteDirectory(new File(git.getRepository().getDirectory().getParentFile().getPath()));;
 
-        //Get readmeText by ai-server
-        String readmeText = aiService.getReadmeText(requestJsonData, gitUrl);
-
         //Create ReadmeItem
         ReadmeItem readmeItem = ReadmeItem.builder()
                 .githubOriginalUrl(gitUrl)
-                .readmeText(readmeText)
                 .createdTime(LocalDateTime.now())
                 .build();
+        ReadmeItem newReadmeItem = readmeItemRepository.save(readmeItem);
+        newReadmeItem = findReadmeItemThrowException(newReadmeItem.getId());
 
-        return readmeItemRepository.save(readmeItem);
+        //POST call readmeText by ai-server
+        aiService.requestReadmeText(newReadmeItem.getId(), gitUrl, requestJsonData);
+
+        return readmeItemRepository.save(newReadmeItem);
     }
 
     @Transactional
