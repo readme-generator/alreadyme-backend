@@ -1,6 +1,7 @@
 # ALREADYME-Backend
 
 ![image](https://user-images.githubusercontent.com/72238126/190327489-31753722-2449-4889-9544-a811acb5577f.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend?ref=badge_shield)
 <h1 align="center">ALREADYME.md Backend</h1>
 
 <p align="center">
@@ -23,6 +24,9 @@
 ---
 
 <br>
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend?ref=badge_large)
 
 ## What is the ALREADYME.md?
 ALREADYME is a multiplatform desktop application which create a README.md. If you input your github repository, it will analyze source codes of the repository and create README.md using AI. Let's create README.md of repository with only one-click.
