@@ -1,7 +1,6 @@
 # ALREADYME-Backend
 
 ![image](https://user-images.githubusercontent.com/72238126/190327489-31753722-2449-4889-9544-a811acb5577f.png)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend?ref=badge_shield)
 <h1 align="center">ALREADYME.md Backend</h1>
 
 <p align="center">
@@ -11,8 +10,11 @@
 <a href="https://github.com/readme-generator/alreadyme-backend/blob/master/LICENSE">
    <img alt="GitHub" src="https://img.shields.io/github/license/readme-generator/alreadyme-backend">
 </a>
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend?ref=badge_shield">
+	<img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend.svg?type=shield" />
+</a>
 <a href="">
-   <img alt="Top Language" src="https://img.shields.io/github/languages/top/readme-generator/alreadyme-backend?color=6C3FD1">
+   <img alt="Top Language" src="https://img.shields.io/github/languages/top/readme-generator/alreadyme-backend?color=684A3B">
 </a>
 <a href="https://www.codefactor.io/repository/github/readme-generator/alreadyme-backend/overview/develop">
 	<img src="https://www.codefactor.io/repository/github/readme-generator/alreadyme-backend/badge/develop" alt="CodeFactor" />
@@ -24,9 +26,6 @@
 ---
 
 <br>
-
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend?ref=badge_large)
 
 ## What is the ALREADYME.md?
 ALREADYME is a multiplatform desktop application which create a README.md. If you input your github repository, it will analyze source codes of the repository and create README.md using AI. Let's create README.md of repository with only one-click.
@@ -114,5 +113,8 @@ ai-server.host=
 ## License
 
 [Apache LICENSE-2.0](https://github.com/readme-generator/alreadyme-backend/blob/develop/LICENCE)
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Freadme-generator%2Falreadyme-backend?ref=badge_large)
 
 ---
