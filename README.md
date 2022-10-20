@@ -28,6 +28,7 @@
 <br>
 
 ## What is the ALREADYME.md?
+![ALREADME-MAIN](https://user-images.githubusercontent.com/37138188/196944432-82a559ee-5b10-4981-88e6-ca1c76f04313.gif)
 ALREADYME is a multiplatform desktop application which create a README.md. If you input your github repository, it will analyze source codes of the repository and create README.md using AI. Let's create README.md of repository with only one-click.
 
 ---
@@ -85,6 +86,28 @@ cloud.aws.stack.auto=
 ai-server.host=
 
 ```
+
+<br>
+
+## Features
+
+- The start of creating README.md
+  - Enter GitHub repository URL
+    - WEB URL
+    - ".git" URL
+- The process of creating README.md
+  - Loading View
+    - Repository Cloning
+    - Real-time loading of the creation process
+- The complete of creating README.md
+  - Donwload README.md
+    - Select a file download location
+    - Download Markdown file
+  - Pull-Request README.md
+    - Pull-Request to original repository from [@ALREADYME-BOT](https://github.com/ALREADYME-BOT) repository
+    - Open Web URL after Pull-Request is completed
+    
+---
 
 <br>
 
