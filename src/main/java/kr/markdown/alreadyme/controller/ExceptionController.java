@@ -26,7 +26,7 @@ public class ExceptionController {
         Map<String, Object> error = new HashMap<>();
         error.put("timestamp", new Date());
         error.put("code", "400");
-        error.put("message", "Error occured while cloning the repository. Check your github url.");
+        error.put("message", "Error occurred while cloning the repository. Check your github url.");
         return ResponseEntity.badRequest().body(error);
     }
 }

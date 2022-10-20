@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Create;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Request;
-import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.ObjectUrl;
+import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Download;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.PullRequest;
 import kr.markdown.alreadyme.domain.model.ReadmeItem;
 import kr.markdown.alreadyme.repository.ReadmeItemRepository;
@@ -88,25 +88,25 @@ public class AppService {
     }
 
     @Transactional
-    public ObjectUrl download(Request requestDto) throws Exception {
+    public Download download(Request requestDto) throws Exception {
 
-        ObjectUrl objectUrlDto;
+        Download downloadDto;
         ReadmeItem readmeItem = findReadmeItemThrowException(requestDto.getId());
 
         //If S3 link already exists
         if(readmeItem.getObjectUrl() != null) {
-            objectUrlDto = ObjectUrl.builder()
+            downloadDto = Download.builder()
                     .objectUrl(readmeItem.getObjectUrl())
                     .build();
-            return objectUrlDto;
+            return downloadDto;
         }
 
-        //Create README.md
-        File uploadFile = createDownloadReadme(readmeItem.getReadmeText());
+        //Create README.md File
+        File uploadFile = createReadmeInDownload(readmeItem.getReadmeText());
 
         //Upload README.md to S3-bucket
         String objectUrl = s3Service.upload(uploadFile, uploadFile.getParentFile().getName());
-        objectUrlDto = ObjectUrl.builder()
+        downloadDto = Download.builder()
                 .objectUrl(objectUrl)
                 .build();
 
@@ -116,7 +116,7 @@ public class AppService {
         //Delete Folder
         FileUtils.deleteDirectory(new File(uploadFile.getParentFile().getPath()));
 
-        return objectUrlDto;
+        return downloadDto;
     }
 
     public PullRequest pullRequest(Request requestDto) throws Exception {
@@ -130,7 +130,7 @@ public class AppService {
         Git git = JGitUtil.cloneRepository(githubBotUrl);
 
         //Create README.md
-        createPullRequestReadme(
+        createReadmeInPullRequest(
                 git.getRepository().getDirectory().getPath() + File.separator + "..",
                 readmeItem.getReadmeText()
         );
@@ -155,8 +155,8 @@ public class AppService {
         return pullRequestDto;
     }
 
-    //create README.md
-    private void createPullRequestReadme(String localDirPath, String text) throws Exception {
+    //create README.md in pull-request
+    private void createReadmeInPullRequest(String localDirPath, String text) throws Exception {
         try {
             FileWriter output = new FileWriter(localDirPath + File.separator +"README.md");
             output.write(text);
@@ -166,8 +166,8 @@ public class AppService {
         }
     }
 
-    //create download README.md
-    private File createDownloadReadme(String text) throws Exception {
+    //create README.md in download
+    private File createReadmeInDownload(String text) throws Exception {
         File file = new File(System.getProperty("user.dir") + File.separator + UUID.randomUUID() + File.separator + "README.md");
         try {
             file.getParentFile().mkdirs();

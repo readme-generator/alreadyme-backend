@@ -2,7 +2,7 @@ package kr.markdown.alreadyme.controller;
 
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Create;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Request;
-import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.ObjectUrl;
+import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.Download;
 import kr.markdown.alreadyme.domain.dto.ReadmeItemDto.PullRequest;
 import kr.markdown.alreadyme.domain.model.ReadmeItem;
 import kr.markdown.alreadyme.service.AppService;
@@ -19,7 +19,7 @@ import javax.validation.Valid;
 public class AppController {
     public final AppService service;
 
-    @PostMapping
+    @PostMapping("readme")
     @ResponseStatus(HttpStatus.OK)
     public ReadmeItem post(@Valid @RequestBody Create createDto) throws Exception {
         return service.create(createDto);
@@ -27,7 +27,7 @@ public class AppController {
 
     @PostMapping("download")
     @ResponseStatus(HttpStatus.OK)
-    public ObjectUrl download(@Valid @RequestBody Request requestDto) throws Exception {
+    public Download download(@Valid @RequestBody Request requestDto) throws Exception {
         return service.download(requestDto);
     }
 

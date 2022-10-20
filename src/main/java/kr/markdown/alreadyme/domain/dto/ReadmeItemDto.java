@@ -36,7 +36,7 @@ public interface ReadmeItemDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    class ObjectUrl {
+    class Download {
         @NotBlank
         private String objectUrl;
     }
@@ -64,25 +64,4 @@ public interface ReadmeItemDto {
         private String pullRequestUrl;
     }
 
-    @Getter
-    @Setter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    class Result {
-        @NotNull
-        private Long id;
-
-        @NotBlank
-        @Pattern(regexp = "(?:https://)github.com[:/](.*).git")
-        private String githubOriginalUrl;
-
-        @NotBlank
-        private String readmeText;
-
-        private String objectUrl;
-
-        @DateTimeFormat
-        private LocalDateTime createdTime;
-    }
 }
