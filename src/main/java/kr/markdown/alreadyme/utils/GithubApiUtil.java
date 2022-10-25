@@ -34,7 +34,7 @@ public class GithubApiUtil {
         return null;
     }
 
-    public static String gitPullRequest(String githubUrl, String token, String branchName, String masterBranchName) {
+    public static String gitPullRequest(String githubUrl, String token, String branchName, String masterBranchName, String githubId) {
         try {
             HttpClient httpClient = HttpClientBuilder.create().build();
             HttpPost httpPost = new HttpPost("https://api.github.com/repos"+ exportGitRepoPath(githubUrl)+"/pulls");
@@ -44,9 +44,9 @@ public class GithubApiUtil {
 
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode node = mapper.createObjectNode();
-            node.put("title", "Add README.md by ALREADYME-BOT");
-            node.put("body", "This text was created by ALREADYME-BOT\nhttps://github.com/ALREADYME-BOT");
-            node.put("head", "ALREADYME-BOT:" + branchName);
+            node.put("title", "Add README.md by " + githubId);
+            node.put("body", "This text was created by " + githubId + "\n" + "https://github.com/" + githubId);
+            node.put("head", githubId + ":" + branchName);
             node.put("base", masterBranchName);
 
             httpPost.setEntity(new StringEntity(node.toString(), "UTF-8"));
@@ -56,7 +56,6 @@ public class GithubApiUtil {
 
             ObjectMapper resMapper = new ObjectMapper();
             JsonNode resNode = resMapper.readTree(jsonStr);
-            System.out.println(jsonStr);
             return resNode.get("html_url").asText();
 
         } catch (Exception e) {

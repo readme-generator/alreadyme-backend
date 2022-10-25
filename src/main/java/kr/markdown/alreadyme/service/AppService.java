@@ -137,11 +137,11 @@ public class AppService {
         String masterBranchName = git.getRepository().getBranch();
         JGitUtil.checkout(git, String.valueOf(requestDto.getId()));
         JGitUtil.add(git, ".");
-        JGitUtil.commit(git, "feat: Add README.md by ALREADYME-BOT", name, email);
+        JGitUtil.commit(git, "feat: Add README.md by " + id, name, email);
         JGitUtil.push(git, id, token);
 
         //GitPullRequest
-        String pullRequestUrl = GithubApiUtil.gitPullRequest(readmeItem.getGithubOriginalUrl(), token, git.getRepository().getBranch(), masterBranchName);
+        String pullRequestUrl = GithubApiUtil.gitPullRequest(readmeItem.getGithubOriginalUrl(), token, git.getRepository().getBranch(), masterBranchName, id);
 
         //Delete Local & Remote Repository
         JGitUtil.close(git);
